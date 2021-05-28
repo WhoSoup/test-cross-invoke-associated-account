@@ -1,18 +1,13 @@
 use solana_program::{
     account_info::{next_account_info, AccountInfo},
     entrypoint::ProgramResult,
-    msg,
     program::invoke,
-    program_pack::Pack,
     pubkey::Pubkey,
-    sysvar::{rent::Rent, Sysvar},
 };
-
-use spl_token::state::{Account, Mint};
 
 pub struct Processor {}
 impl Processor {
-    pub fn process(program_id: &Pubkey, accounts: &[AccountInfo], input: &[u8]) -> ProgramResult {
+    pub fn process(_program_id: &Pubkey, accounts: &[AccountInfo], _input: &[u8]) -> ProgramResult {
         let iter = &mut accounts.iter();
         let funder_info = next_account_info(iter)?;
         let owner_info = next_account_info(iter)?;
@@ -20,7 +15,6 @@ impl Processor {
 
         let mint_info = next_account_info(iter)?;
         let rent_info = next_account_info(iter)?;
-        let rent = Rent::from_account_info(rent_info)?;
         let spl_token_info = next_account_info(iter)?;
         let spl_assoc_info = next_account_info(iter)?;
 
@@ -37,9 +31,8 @@ impl Processor {
                 mint_info.clone(),
                 rent_info.clone(),
                 spl_token_info.clone(),
+                spl_assoc_info.clone(),
             ],
-        )?;
-
-        Ok(())
+        )
     }
 }

@@ -7,10 +7,8 @@ import {
 import {
     BPF_LOADER_PROGRAM_ID,
     BpfLoader,
-    Account,
     Keypair,
     LAMPORTS_PER_SOL,
-    Signer,
     Transaction,
     TransactionInstruction,
     AccountMeta,
@@ -89,30 +87,10 @@ const programId = deploy_key.publicKey;
         token_id
     ]);
 
-    const token = new Token(
-        connection,
-        token_id.publicKey,
-        TOKEN_PROGRAM_ID,
-        new Account(funder.secretKey)
-    );
-
     const normal = new Keypair();
     const normal_associated = await PublicKey.findProgramAddress(
         [
             normal.publicKey.toBuffer(),
-            TOKEN_PROGRAM_ID.toBuffer(),
-            token_id.publicKey.toBuffer()
-        ],
-        ASSOCIATED_TOKEN_PROGRAM_ID
-    );
-
-    const program_address = await PublicKey.findProgramAddress(
-        [Buffer.from('owner')],
-        programId
-    );
-    const program_address_associated = await PublicKey.findProgramAddress(
-        [
-            program_address[0].toBuffer(),
             TOKEN_PROGRAM_ID.toBuffer(),
             token_id.publicKey.toBuffer()
         ],
